@@ -1066,9 +1066,7 @@ Limites :
 | Task 3 | Analyser `AndroidManifest.xml` | Package, SDK, activité, permissions, configurations sensibles | ✅ Terminé |
 | Task 3 | Explorer les ressources | `strings.xml` analysé | ✅ Terminé |
 | Task 4 | Rechercher les chaînes sensibles | `http`, `https`, `.com`, `.net`, `.org`, `.io`, `api`, `token`, `secret`, `password`, `debug`, `root`, `AES`, `Base64`, `endpoint`, `url`, `server`, `api_key`, `apikey`, `auth`, `bearer`, `jwt`, `oauth`, `firebase`, `crashlytics`, etc. | ✅ Terminé |
-| Task 4 | Documenter au moins 5 observations | 14 recherches + observations principales | ✅ Terminé |
-| Task 5 | Extraire `classes.dex` | `dex_out/classes.dex` généré | ✅ Terminé |
-| Task 5 | Convertir DEX vers JAR | `results/UnCrackable-Level1.jar` généré | ✅ Terminé |
+| Task 4 | Documenter au moins 5 observations | 29 recherches/patterns documentés + observations principales | ✅ Terminé || Task 5 | Convertir DEX vers JAR | `results/UnCrackable-Level1.jar` généré | ✅ Terminé |
 | Task 6 | Ouvrir le JAR dans JD-GUI | JAR ouvert et classes analysées | ✅ Terminé |
 | Task 6 | Comparer JADX GUI et JD-GUI | Tableau comparatif ajouté | ✅ Terminé |
 | Task 7 | Rédiger le rapport final | `README.md` + rapport Markdown | ✅ Terminé |
