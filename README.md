@@ -484,6 +484,18 @@ Les recherches ont été effectuées dans JADX GUI avec les options suivantes ac
 | `verify` | 8 | Méthode de vérification localisable | Moyen |
 | `AES` | 3 | Logique cryptographique visible | Moyen à élevé |
 | `Base64` | 2 | Donnée Base64 codée en dur | Moyen |
+| `.com` | 3 | Résultats liés uniquement au namespace Android `http://schemas.android.com/apk/res/android` | Faible / RAS |
+| `.net` | 0 | Aucun domaine `.net` identifié | Faible / RAS |
+| `.org` | 0 | Aucun domaine `.org` identifié | Faible / RAS |
+| `.io` | 1 | Résultat lié à l’import Java standard `java.io.File`, sans lien avec un domaine réseau | Faible / RAS |
+| `endpoint` | 0 | Aucun endpoint applicatif identifié | Faible / RAS |
+| `url` | 0 | Aucune URL applicative trouvée | Faible / RAS |
+| `server` | 0 | Aucun serveur ou endpoint backend visible | Faible / RAS |
+| `api_key` | 0 | Aucune clé API visible | Faible / RAS |
+| `auth` | 0 | Aucun élément d’authentification visible | Faible / RAS |
+| `jwt` | 0 | Aucun jeton JWT identifié | Faible / RAS |
+| `oauth` | 0 | Aucun mécanisme OAuth visible | Faible / RAS |
+| `crashlytics` | 0 | Aucun service Crashlytics identifié | Faible / RAS |
 
 ---
 
@@ -1050,7 +1062,7 @@ Limites :
 | Task 3 | Ouvrir l’APK dans JADX GUI | APK chargé et arborescence explorée | ✅ Terminé |
 | Task 3 | Analyser `AndroidManifest.xml` | Package, SDK, activité, permissions, configurations sensibles | ✅ Terminé |
 | Task 3 | Explorer les ressources | `strings.xml` analysé | ✅ Terminé |
-| Task 4 | Rechercher les chaînes sensibles | `http`, `https`, `api`, `token`, `secret`, `password`, `debug`, `root`, `AES`, `Base64`, etc. | ✅ Terminé |
+| Task 4 | Rechercher les chaînes sensibles | `http`, `https`, `.com`, `.net`, `.org`, `.io`, `api`, `token`, `secret`, `password`, `debug`, `root`, `AES`, `Base64`, `endpoint`, `url`, `server`, `api_key`, `auth`, `jwt`, `oauth`, `crashlytics`, etc. | ✅ Terminé |
 | Task 4 | Documenter au moins 5 observations | 14 recherches + observations principales | ✅ Terminé |
 | Task 5 | Extraire `classes.dex` | `dex_out/classes.dex` généré | ✅ Terminé |
 | Task 5 | Convertir DEX vers JAR | `results/UnCrackable-Level1.jar` généré | ✅ Terminé |
