@@ -801,6 +801,7 @@ Renforcer la défense avec :
 - contrôle d’environnement plus robuste.
 
 ---
+
 ## Constat #6 — Utilisation d’AES sans IV explicite / configuration cryptographique faible
 
 | Élément | Détail |
@@ -820,7 +821,9 @@ Dans une application réelle, une configuration cryptographique faible ou incomp
 ### Remédiation recommandée
 
 Utiliser un mode de chiffrement authentifié moderne comme `AES/GCM/NoPadding` avec un IV aléatoire et unique pour chaque opération. Les clés cryptographiques ne doivent pas être stockées directement dans le code client.
+
 ---
+
 ## Constat #7 — Versions SDK anciennes
 
 | Élément | Détail |
@@ -840,6 +843,7 @@ Dans une application réelle, cibler d’anciennes versions Android peut empêch
 ### Remédiation recommandée
 
 Mettre à jour progressivement `targetSdkVersion` vers une version récente d’Android et éviter de supporter des versions trop anciennes si ce n’est pas nécessaire.
+
 ---
 
 # 9. Points positifs observés
@@ -968,6 +972,7 @@ LAB4_UnCrackable-Level1
 | Organisation des fichiers | Terminé |
 
 ---
+
 # 13. Ressources utilisées
 
 - OWASP MAS Crackmes — Android UnCrackable L1  
@@ -984,7 +989,9 @@ LAB4_UnCrackable-Level1
 
 - OWASP MASVS — Mobile Application Security Verification Standard  
   https://mas.owasp.org/MASVS/
+  
 ---
+
 # 14. Périmètre et limites de l’analyse
 
 Cette analyse est strictement statique. L’application n’a pas été modifiée ni exploitée.  
@@ -995,8 +1002,9 @@ Limites :
 - aucune instrumentation avec Frida ou outil similaire ;
 - aucune exploitation active des mécanismes anti-root ou anti-debug ;
 - analyse réalisée uniquement sur un APK pédagogique autorisé.
-<div align="center">
+
 ---
+
 # 15. Correspondance avec les tâches du lab
 
 | Tâche | Réalisation | Preuve |
@@ -1009,8 +1017,11 @@ Limites :
 | Task 6 | Analyse JD-GUI et comparaison | captures JD-GUI |
 | Task 7 | Rapport final | `README.md` |
 | Task 8 | Organisation finale des fichiers | arborescence du projet |
+
 ---
 
+<div align="center">
+    
 ## ✅ Conclusion finale
 
 Cette analyse statique a permis de comprendre la structure interne de l’APK **UnCrackable-Level1**, d’identifier les composants Android déclarés, d’analyser la logique de sécurité visible dans le code décompilé, puis de comparer deux approches de décompilation : **JADX GUI** et **JD-GUI**.
