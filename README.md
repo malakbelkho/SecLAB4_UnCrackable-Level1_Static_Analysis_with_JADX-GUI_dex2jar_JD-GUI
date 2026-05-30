@@ -801,6 +801,46 @@ Renforcer la défense avec :
 - contrôle d’environnement plus robuste.
 
 ---
+## Constat #6 — Utilisation d’AES sans IV explicite / configuration cryptographique faible
+
+| Élément | Détail |
+|---|---|
+| **Sévérité** | Élevée dans un contexte réel |
+| **Localisation** | `sg.vantagepoint.a.a.a(byte[], byte[])` |
+| **Élément observé** | Utilisation de `SecretKeySpec`, `Cipher.getInstance("AES")` et absence d’IV explicite |
+
+### Description
+
+La classe cryptographique utilise AES pour déchiffrer la valeur utilisée dans la vérification du secret. Le code décompilé montre une utilisation d’AES sans IV explicite visible dans la méthode analysée.
+
+### Impact potentiel
+
+Dans une application réelle, une configuration cryptographique faible ou incomplète peut faciliter l’analyse du mécanisme de chiffrement, surtout lorsque les valeurs utilisées sont également codées en dur dans l’application.
+
+### Remédiation recommandée
+
+Utiliser un mode de chiffrement authentifié moderne comme `AES/GCM/NoPadding` avec un IV aléatoire et unique pour chaque opération. Les clés cryptographiques ne doivent pas être stockées directement dans le code client.
+---
+## Constat #7 — Versions SDK anciennes
+
+| Élément | Détail |
+|---|---|
+| **Sévérité** | Faible à moyenne |
+| **Localisation** | `AndroidManifest.xml`, balise `<uses-sdk>` |
+| **Valeurs observées** | `minSdkVersion="19"`, `targetSdkVersion="28"` |
+
+### Description
+
+L’application déclare une version minimale Android ancienne (`minSdkVersion=19`) et une version cible non récente (`targetSdkVersion=28`).
+
+### Impact potentiel
+
+Dans une application réelle, cibler d’anciennes versions Android peut empêcher l’application de bénéficier de certaines protections modernes introduites dans les versions récentes du système.
+
+### Remédiation recommandée
+
+Mettre à jour progressivement `targetSdkVersion` vers une version récente d’Android et éviter de supporter des versions trop anciennes si ce n’est pas nécessaire.
+---
 
 # 9. Points positifs observés
 
@@ -928,8 +968,48 @@ LAB4_UnCrackable-Level1
 | Organisation des fichiers | Terminé |
 
 ---
+# 13. Ressources utilisées
 
+- OWASP MAS Crackmes — Android UnCrackable L1  
+  https://mas.owasp.org/crackmes/
+
+- JADX — Dex to Java decompiler  
+  https://github.com/skylot/jadx
+
+- dex2jar — Tools to work with Android `.dex` files  
+  https://github.com/pxb1988/dex2jar
+
+- JD-GUI — Java Decompiler GUI  
+  https://github.com/java-decompiler/jd-gui
+
+- OWASP MASVS — Mobile Application Security Verification Standard  
+  https://mas.owasp.org/MASVS/
+---
+# 14. Périmètre et limites de l’analyse
+
+Cette analyse est strictement statique. L’application n’a pas été modifiée ni exploitée.  
+Les observations reposent sur le contenu décompilé avec JADX GUI et JD-GUI, ainsi que sur l’extraction du bytecode avec dex2jar.
+
+Limites :
+- aucune exécution dynamique de l’application ;
+- aucune instrumentation avec Frida ou outil similaire ;
+- aucune exploitation active des mécanismes anti-root ou anti-debug ;
+- analyse réalisée uniquement sur un APK pédagogique autorisé.
 <div align="center">
+---
+# 15. Correspondance avec les tâches du lab
+
+| Tâche | Réalisation | Preuve |
+|---|---|---|
+| Task 1 | Workspace, vérification ZIP, hash SHA-256 | `Format-Hex.png`, `Get-FileHash.png` |
+| Task 2 | APK OWASP disponible et documenté | Informations générales |
+| Task 3 | Analyse JADX GUI du manifeste et des ressources | `AndroidManifest.png`, `strings.png` |
+| Task 4 | Recherche de chaînes sensibles | `search_*.png` |
+| Task 5 | Extraction DEX et conversion JAR | `dex_out_classes_dex.png`, `convert_dex-jar.png` |
+| Task 6 | Analyse JD-GUI et comparaison | captures JD-GUI |
+| Task 7 | Rapport final | `README.md` |
+| Task 8 | Organisation finale des fichiers | arborescence du projet |
+---
 
 ## ✅ Conclusion finale
 
