@@ -705,7 +705,7 @@ La classe `sg.vantagepoint.a.c` confirme les trois contrôles anti-root :
 | #3 | Logique de vérification du secret visible | 🟠 Moyenne | `MainActivity.verify()` |
 | #4 | Logs techniques liés à AES | 🟠 Moyenne | `Log.d("CodeCheck", ...)` |
 | #5 | Mécanismes anti-root et anti-debug visibles | 🟠 Moyenne | `MainActivity`, `sg.vantagepoint.a.b/c` |
-| #6 | AES sans IV explicite / configuration faible | 🔴 Élevée | `sg.vantagepoint.a.a` |
+| #6 | Configuration AES implicite / absence d’IV visible | 🔴 Élevée | `sg.vantagepoint.a.a` |
 | #7 | Versions SDK anciennes | 🟡 Faible à moyenne | `AndroidManifest.xml` |
 
 ---
@@ -964,6 +964,7 @@ Aucune permission demandée.
 | `android:allowBackup` | `true` | Potentiel risque si données sensibles locales |
 | `android:debuggable` | Non trouvé | Bon point |
 | `usesCleartextTraffic` | Non trouvé | Bon point |
+| `network_security_config.xml` | Non trouvé | Aucun fichier de configuration réseau spécifique identifié |
 | `MAIN / LAUNCHER` | Présent | Normal pour l’activité principale |
 
 ---
@@ -1068,7 +1069,7 @@ Limites :
 | Au moins 3 constats de sécurité | 7 constats documentés | ✅ Fourni |
 | Remédiations proposées | Une remédiation par constat | ✅ Fourni |
 | Captures d’écran critiques | Dossier `screenshots/` | ✅ Fourni |
-| JAR décompilé / généré | `results/UnCrackable-Level1.jar` | ✅ Fourni |
+| JAR généré pour analyse JD-GUI | `results/UnCrackable-Level1.jar` | ✅ Fourni |
 | Comparaison JADX / JD-GUI | Section dédiée | ✅ Fourni |
 
 ## 14.3 Éléments optionnels
