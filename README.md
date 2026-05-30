@@ -674,7 +674,9 @@ La classe `sg.vantagepoint.a.c` confirme les trois contrôles anti-root :
 
 ---
 
-# 🧨 Légende de sévérité
+# 8. Analyse des constats de sécurité
+
+## 🧨 8.1 Légende de sévérité
 
 | Indicateur | Niveau | Signification |
 |---|---|---|
@@ -684,9 +686,9 @@ La classe `sg.vantagepoint.a.c` confirme les trois contrôles anti-root :
 | 🔴 | Élevée | Risque important dans une application réelle |
 | ⚫ | Critique | Secret critique, compromission directe ou impact majeur |
 
----
+--- 
 
-# 8. Synthèse visuelle des constats
+## 8.2 Synthèse visuelle des constats
 
 <div align="center">
 
