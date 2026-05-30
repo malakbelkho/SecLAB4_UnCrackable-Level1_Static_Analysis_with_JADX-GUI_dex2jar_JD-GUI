@@ -717,7 +717,8 @@ android:allowBackup="false"
 |---|---|
 | **Sévérité** | 🔴 **Élevée dans un contexte réel** |
 | **Localisation** | `sg.vantagepoint.uncrackable1.a.a(String)` |
-| **Valeurs observées** | Hexadécimal + Base64 codés en dur |
+| **Valeurs observées** | Valeur hexadécimale `8d127684cbc37c17616d806cf50473cc` et chaîne Base64 `5UJiFctbmgbDoLXmpL12mkno8HT4Lv8dlat8FxR2GOc=` |
+| **Catégorie** | Secrets / cryptographie côté client |
 
 ### Description
 
@@ -753,6 +754,8 @@ Préférer :
 |---|---|
 | **Sévérité** | 🟠 **Moyenne** |
 | **Localisation** | `sg.vantagepoint.uncrackable1.MainActivity.verify()` et `sg.vantagepoint.uncrackable1.a` |
+| **Valeurs observées** | Appel direct à `a.a(string)` pour comparer l’entrée utilisateur au secret attendu |
+| **Catégorie** | Validation côté client / reverse engineering |
 
 ### Description
 
@@ -780,13 +783,14 @@ Côté client, utiliser plusieurs couches de protection :
 
 ---
 
-## Constat #4 — Logs techniques liés à AES
+## Constat #4 — Logs techniques liés à AES 🟠
 
 | Élément | Détail |
 |---|---|
-| **Sévérité** | Moyenne |
+| **Sévérité** | 🟠 **Moyenne** |
 | **Localisation** | `sg.vantagepoint.uncrackable1.a.a(String)` |
 | **Valeur observée** | `Log.d("CodeCheck", "AES error:" + e.getMessage())` |
+| **Catégorie** | Journalisation / exposition d’informations techniques |
 
 ### Description
 
@@ -803,12 +807,14 @@ Utiliser des messages génériques ou conditionner les logs aux builds de dével
 
 ---
 
-## Constat #5 — Mécanismes anti-root et anti-debug visibles
+## Constat #5 — Mécanismes anti-root et anti-debug visibles 🟠
 
 | Élément | Détail |
 |---|---|
-| **Sévérité** | Moyenne |
+| **Sévérité** | 🟠 **Moyenne** |
 | **Localisation** | `MainActivity`, `sg.vantagepoint.a.b`, `sg.vantagepoint.a.c` |
+| **Valeurs observées** | `Root detected!`, `App is debuggable!`, `su`, `test-keys` |
+| **Catégorie** | Protection anti-reverse engineering |
 
 ### Description
 
@@ -843,7 +849,8 @@ Renforcer la défense avec :
 |---|---|
 | **Sévérité** | 🔴 **Élevée dans un contexte réel** |
 | **Localisation** | `sg.vantagepoint.a.a.a(byte[], byte[])` |
-| **Élément observé** | Utilisation de `SecretKeySpec`, `Cipher.getInstance("AES")` et absence d’IV explicite |
+| **Valeurs observées** | Utilisation de `SecretKeySpec`, `Cipher.getInstance("AES")` et absence d’IV explicite visible |
+| **Catégorie** | Cryptographie / configuration de chiffrement |
 
 ### Description
 
@@ -859,13 +866,14 @@ Utiliser un mode de chiffrement authentifié moderne comme `AES/GCM/NoPadding` a
 
 ---
 
-## Constat #7 — Versions SDK anciennes
+## Constat #7 — Versions SDK anciennes 🟡
 
 | Élément | Détail |
 |---|---|
-| **Sévérité** | Faible à moyenne |
+| **Sévérité** | 🟡 **Faible à moyenne** |
 | **Localisation** | `AndroidManifest.xml`, balise `<uses-sdk>` |
 | **Valeurs observées** | `minSdkVersion="19"`, `targetSdkVersion="28"` |
+| **Catégorie** | Compatibilité / durcissement Android |
 
 ### Description
 
