@@ -648,15 +648,50 @@ La classe `sg.vantagepoint.a.c` confirme les trois contrôles anti-root :
 
 ---
 
-# 8. Constats détaillés
+# 🧨 Légende de sévérité
 
-## Constat #1 — Sauvegarde applicative activée
+| Indicateur | Niveau | Signification |
+|---|---|---|
+| 🟢 | Faible | Information non sensible, impact limité ou résultat RAS |
+| 🟡 | Faible à moyenne | Point à surveiller selon le contexte |
+| 🟠 | Moyenne | Risque exploitable dans certaines conditions |
+| 🔴 | Élevée | Risque important dans une application réelle |
+| ⚫ | Critique | Secret critique, compromission directe ou impact majeur |
+
+---
+
+# 8. Synthèse visuelle des constats
+
+<div align="center">
+
+| 🔎 Total constats | 🔴 Élevés | 🟠 Moyens | 🟡 Faible à moyen | 🟢 Faibles |
+|---:|---:|---:|---:|---:|
+| **7** | **2** | **4** | **1** | **0** |
+
+</div>
+
+| ID | Constat | Sévérité | Zone concernée |
+|---|---|---|---|
+| #1 | Sauvegarde applicative activée | 🟠 Moyenne | `AndroidManifest.xml` |
+| #2 | Valeurs cryptographiques codées en dur | 🔴 Élevée | `sg.vantagepoint.uncrackable1.a` |
+| #3 | Logique de vérification du secret visible | 🟠 Moyenne | `MainActivity.verify()` |
+| #4 | Logs techniques liés à AES | 🟠 Moyenne | `Log.d("CodeCheck", ...)` |
+| #5 | Mécanismes anti-root et anti-debug visibles | 🟠 Moyenne | `MainActivity`, `sg.vantagepoint.a.b/c` |
+| #6 | AES sans IV explicite / configuration faible | 🔴 Élevée | `sg.vantagepoint.a.a` |
+| #7 | Versions SDK anciennes | 🟡 Faible à moyenne | `AndroidManifest.xml` |
+
+---
+
+# 9. Constats détaillés
+
+## Constat #1 — Sauvegarde applicative activée 🟠
 
 | Élément | Détail |
 |---|---|
-| **Sévérité** | Moyenne |
+| **Sévérité** | 🟠 **Moyenne** |
 | **Localisation** | `AndroidManifest.xml`, balise `<application>` |
 | **Valeur observée** | `android:allowBackup="true"` |
+| **Catégorie** | Configuration sensible |
 
 ### Description
 
@@ -676,11 +711,11 @@ android:allowBackup="false"
 
 ---
 
-## Constat #2 — Valeurs cryptographiques codées en dur
+## Constat #2 — Valeurs cryptographiques codées en dur 🔴
 
 | Élément | Détail |
 |---|---|
-| **Sévérité** | Élevée dans un contexte réel |
+| **Sévérité** | 🔴 **Élevée dans un contexte réel** |
 | **Localisation** | `sg.vantagepoint.uncrackable1.a.a(String)` |
 | **Valeurs observées** | Hexadécimal + Base64 codés en dur |
 
@@ -712,11 +747,11 @@ Préférer :
 
 ---
 
-## Constat #3 — Logique de vérification du secret visible
+## Constat #3 — Logique de vérification du secret visible 🟠
 
 | Élément | Détail |
 |---|---|
-| **Sévérité** | Moyenne |
+| **Sévérité** | 🟠 **Moyenne** |
 | **Localisation** | `sg.vantagepoint.uncrackable1.MainActivity.verify()` et `sg.vantagepoint.uncrackable1.a` |
 
 ### Description
@@ -802,11 +837,11 @@ Renforcer la défense avec :
 
 ---
 
-## Constat #6 — Utilisation d’AES sans IV explicite / configuration cryptographique faible
+## Constat #6 — Utilisation d’AES sans IV explicite / configuration cryptographique faible 🔴
 
 | Élément | Détail |
 |---|---|
-| **Sévérité** | Élevée dans un contexte réel |
+| **Sévérité** | 🔴 **Élevée dans un contexte réel** |
 | **Localisation** | `sg.vantagepoint.a.a.a(byte[], byte[])` |
 | **Élément observé** | Utilisation de `SecretKeySpec`, `Cipher.getInstance("AES")` et absence d’IV explicite |
 
@@ -846,7 +881,7 @@ Mettre à jour progressivement `targetSdkVersion` vers une version récente d’
 
 ---
 
-# 9. Points positifs observés
+# 10. Points positifs observés
 
 | Élément vérifié | Résultat |
 |---|---|
@@ -863,7 +898,7 @@ Mettre à jour progressivement `targetSdkVersion` vers une version récente d’
 
 ---
 
-# 10. Résumé exécutif
+# 11. Résumé exécutif
 
 L’analyse statique de l’application **UnCrackable-Level1.apk** a permis d’identifier plusieurs éléments intéressants liés à la sécurité mobile.
 
@@ -889,9 +924,9 @@ Les risques identifiés sont principalement liés au contexte pédagogique du cr
 
 ---
 
-# 11. Annexes
+# 12. Annexes
 
-## 11.1 Permissions demandées
+## 12.1 Permissions demandées
 
 Aucune permission `uses-permission` n’a été identifiée dans le manifeste.
 
@@ -901,7 +936,7 @@ Aucune permission demandée.
 
 ---
 
-## 11.2 Composants Android déclarés
+## 12.2 Composants Android déclarés
 
 | Type | Composant | Export / exposition |
 |---|---|---|
@@ -912,7 +947,7 @@ Aucune permission demandée.
 
 ---
 
-## 11.3 Configuration sensible
+## 12.3 Configuration sensible
 
 | Élément | Valeur | Commentaire |
 |---|---|---|
@@ -923,7 +958,7 @@ Aucune permission demandée.
 
 ---
 
-## 11.4 Arborescence finale du projet
+## 12.4 Arborescence finale du projet
 
 ```text
 LAB4_UnCrackable-Level1
@@ -957,7 +992,7 @@ LAB4_UnCrackable-Level1
 
 ---
 
-# 12. Checklist des livrables
+# 13. Checklist des livrables
 
 | Livrable demandé | Statut |
 |---|---|
@@ -973,7 +1008,7 @@ LAB4_UnCrackable-Level1
 
 ---
 
-# 13. Ressources utilisées
+# 14. Ressources utilisées
 
 - OWASP MAS Crackmes — Android UnCrackable L1  
   https://mas.owasp.org/crackmes/
@@ -992,7 +1027,7 @@ LAB4_UnCrackable-Level1
   
 ---
 
-# 14. Périmètre et limites de l’analyse
+# 15. Périmètre et limites de l’analyse
 
 Cette analyse est strictement statique. L’application n’a pas été modifiée ni exploitée.  
 Les observations reposent sur le contenu décompilé avec JADX GUI et JD-GUI, ainsi que sur l’extraction du bytecode avec dex2jar.
@@ -1005,7 +1040,7 @@ Limites :
 
 ---
 
-# 15. Correspondance avec les tâches du lab
+# 16. Correspondance avec les tâches du lab
 
 | Tâche | Réalisation | Preuve |
 |---|---|---|
@@ -1017,6 +1052,70 @@ Limites :
 | Task 6 | Analyse JD-GUI et comparaison | captures JD-GUI |
 | Task 7 | Rapport final | `README.md` |
 | Task 8 | Organisation finale des fichiers | arborescence du projet |
+
+---
+
+# 17. Checklist de conformité avec l’énoncé du lab
+
+## 17.1 Tâches techniques
+
+| Tâche demandée | Exigence de l’énoncé | Réalisation | Statut |
+|---|---|---|---|
+| Task 1 | Créer un workspace | Dossier `LAB4_UnCrackable-Level1` organisé | ✅ Terminé |
+| Task 1 | Vérifier que l’APK est une archive ZIP | Magic bytes `50 4B / PK` vérifiés | ✅ Terminé |
+| Task 1 | Lister le contenu de l’APK | `AndroidManifest.xml`, `classes.dex`, `res/`, `META-INF/` identifiés | ✅ Terminé |
+| Task 1 | Calculer le SHA-256 | Hash SHA-256 documenté | ✅ Terminé |
+| Task 2 | Documenter la provenance | OWASP MAS Crackmes — Android UnCrackable L1 | ✅ Terminé |
+| Task 2 | Noter la taille de l’APK | `65.09 KB` | ✅ Terminé |
+| Task 3 | Ouvrir l’APK dans JADX GUI | APK chargé et arborescence explorée | ✅ Terminé |
+| Task 3 | Analyser `AndroidManifest.xml` | Package, SDK, activité, permissions, configurations sensibles | ✅ Terminé |
+| Task 3 | Explorer les ressources | `strings.xml` analysé | ✅ Terminé |
+| Task 4 | Rechercher les chaînes sensibles | `http`, `https`, `api`, `token`, `secret`, `password`, `debug`, `root`, `AES`, `Base64`, etc. | ✅ Terminé |
+| Task 4 | Documenter au moins 5 observations | 14 recherches + observations principales | ✅ Terminé |
+| Task 5 | Extraire `classes.dex` | `dex_out/classes.dex` généré | ✅ Terminé |
+| Task 5 | Convertir DEX vers JAR | `results/UnCrackable-Level1.jar` généré | ✅ Terminé |
+| Task 6 | Ouvrir le JAR dans JD-GUI | JAR ouvert et classes analysées | ✅ Terminé |
+| Task 6 | Comparer JADX GUI et JD-GUI | Tableau comparatif ajouté | ✅ Terminé |
+| Task 7 | Rédiger le rapport final | `README.md` + rapport Markdown | ✅ Terminé |
+| Task 8 | Organiser les fichiers | `screenshots/`, `dex_out/`, `results/` | ✅ Terminé |
+
+## 17.2 Livrables demandés
+
+| Livrable demandé | Élément fourni | Statut |
+|---|---|---|
+| Mini-rapport d’analyse | `README.md` / rapport Markdown | ✅ Fourni |
+| Liste des permissions | Section Annexes — permissions demandées | ✅ Fourni |
+| Liste des composants exposés | Section Annexes — composants Android déclarés | ✅ Fourni |
+| Au moins 3 constats de sécurité | 7 constats documentés | ✅ Fourni |
+| Remédiations proposées | Une remédiation par constat | ✅ Fourni |
+| Captures d’écran critiques | Dossier `screenshots/` | ✅ Fourni |
+| JAR décompilé / généré | `results/UnCrackable-Level1.jar` | ✅ Fourni |
+| Comparaison JADX / JD-GUI | Section dédiée | ✅ Fourni |
+
+## 17.3 Éléments optionnels
+
+| Élément optionnel | Statut | Commentaire |
+|---|---|---|
+| Vérification de signature APK | Non réalisée | Optionnelle dans l’énoncé |
+| Suppression de l’APK après analyse | Non réalisée | APK pédagogique OWASP conservé pour traçabilité |
+| Suppression de `dex_out` | Non réalisée | Conservé pour preuve technique |
+
+---
+
+# 18. Clôture de l’audit
+
+| Point de contrôle final | Résultat |
+|---|---|
+| Données réelles exposées dans le rapport | Aucune donnée réelle détectée |
+| APK analysé | APK pédagogique OWASP autorisé |
+| Exploitation active | Non réalisée |
+| Analyse dynamique | Non réalisée |
+| Modification de l’APK | Non réalisée |
+| Artefacts organisés | Oui |
+| Captures disponibles | Oui |
+| Rapport prêt pour dépôt GitHub | Oui |
+
+> Cette analyse respecte le périmètre pédagogique du lab : analyse statique uniquement, sans exploitation active ni utilisation d’application tierce non autorisée.
 
 ---
 
