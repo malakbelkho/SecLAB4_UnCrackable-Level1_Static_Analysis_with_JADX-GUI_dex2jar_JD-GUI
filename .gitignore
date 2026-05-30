@@ -1,0 +1,19 @@
+@"
+# Windows
+Thumbs.db
+Desktop.ini
+
+# Temporary files
+*.tmp
+*.log
+
+# Tools - do not push downloaded tools
+jadx*/
+dex-tools*/
+jd-gui*/
+
+# Java/IDE junk
+*.class
+.idea/
+.vscode/
+"@ | Set-Content ".gitignore"

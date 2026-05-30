@@ -1,0 +1,668 @@
+APK : UnCrackable-Level1.apk
+Provenance : OWASP MAS Crackmes - Android UnCrackable L1
+SHA-256 : 1DA8BF57D266109F9A07C01BF7111A1975CE01F190B9D914BCD3AE3DBEF96F21
+
+=== Task 3 — Analyse AndroidManifest.xml ===
+
+APK : UnCrackable-Level1.apk
+
+Package principal :
+owasp.mstg.uncrackable1
+
+Version :
+versionCode = 1
+versionName = 1.0
+
+SDK :
+minSdkVersion = 19
+targetSdkVersion = 28
+
+Permissions demandées :
+Aucune permission uses-permission visible dans le manifeste.
+
+Application :
+theme = @style/AppTheme
+label = @string/app_name
+icon = @mipmap/ic_launcher
+allowBackup = true
+
+Activité principale :
+sg.vantagepoint.uncrackable1.MainActivity
+
+Intent-filter :
+android.intent.action.MAIN
+android.intent.category.LAUNCHER
+
+Services :
+Aucun service déclaré.
+
+Receivers :
+Aucun receiver déclaré.
+
+Providers :
+Aucun provider déclaré.
+
+Composants exportés :
+MainActivity possède un intent-filter MAIN/LAUNCHER.
+Même si android:exported n’est pas écrit explicitement, l’activité principale est accessible comme point d’entrée de l’application.
+
+debuggable :
+Aucun android:debuggable="true" trouvé dans le manifeste.
+
+usesCleartextTraffic :
+Aucun android:usesCleartextTraffic="true" trouvé dans le manifeste.
+
+Constat potentiel :
+android:allowBackup="true" est activé. Cela peut représenter un risque si des données sensibles sont stockées localement, car certaines sauvegardes applicatives peuvent exposer les données de l’application selon le contexte Android/appareil.
+
+
+Fichier analysé : resources/res/values/strings.xml
+
+Chaînes présentes :
+- action_settings = Uncrackable1
+- app_name = Uncrackable1
+- button_verify = Verify
+- edit_text = Enter the Secret String
+- thanks = With special thanks to Bernhard Mueller...
+
+Observation :
+Aucune URL, aucun token, aucun mot de passe ni clé API directement visible dans strings.xml.
+Les chaînes sont principalement liées à l’interface utilisateur.
+
+=== Observation — Classe sg.vantagepoint.uncrackable1.a ===
+
+Rôle :
+Cette classe vérifie la chaîne secrète saisie par l’utilisateur.
+
+Éléments sensibles trouvés :
+- Une valeur hexadécimale codée en dur :
+  8d127684cbc37c17616d806cf50473cc
+
+- Une chaîne Base64 codée en dur :
+  5UJiFctbmgbDoLXmpL12mkno8HT4Lv8dlat8FxR2GOc=
+
+- Utilisation d’une fonction AES :
+  sg.vantagepoint.a.a.a(...)
+
+- Présence d’un log de debug :
+  Log.d("CodeCheck", "AES error:" + e.getMessage())
+
+Risque estimé :
+Moyen à élevé dans un contexte réel.
+
+Commentaire :
+La logique de vérification du secret est visible dans le code décompilé. La clé ou les données chiffrées nécessaires à la vérification sont codées en dur, ce qui facilite l’analyse statique et le reverse engineering.
+
+=== Observation — Classe sg.vantagepoint.uncrackable1.MainActivity ===
+
+Rôle :
+Activité principale de l’application.
+
+Méthodes importantes :
+- onCreate()
+- verify(View view)
+- a(String str)
+
+Contrôles de sécurité présents :
+- Détection root :
+  c.a() || c.b() || c.c()
+
+- Détection du mode debuggable :
+  b.a(getApplicationContext())
+
+- Affichage d’une alerte puis fermeture de l’application :
+  System.exit(0)
+
+Fonction de vérification :
+La méthode verify(View view) récupère le texte saisi par l’utilisateur puis appelle :
+sg.vantagepoint.uncrackable1.a.a(string)
+
+Si la vérification réussit :
+"Success!" / "This is the correct secret."
+
+Sinon :
+"Nope..." / "That's not it. Try again."
+
+=== Task 4 — Recherche de chaînes sensibles et observations ===
+
+Observation 1
+Mot-clé recherché : secret
+Valeur trouvée : "Enter the Secret String", "This is the correct secret."
+Fichier / classe : strings.xml et MainActivity
+Méthode : verify(View view)
+Risque : Faible
+Commentaire : Ces chaînes indiquent la fonction principale du crackme, mais ne révèlent pas directement le secret.
+
+Observation 2
+Mot-clé recherché : AES
+Valeur trouvée : "AES error:" + e.getMessage()
+Fichier / classe : sg.vantagepoint.uncrackable1.a
+Méthode : a(String str)
+Risque : Moyen
+Commentaire : La présence d’AES indique que la chaîne secrète est liée à une opération cryptographique visible dans le code décompilé.
+
+Observation 3
+Mot-clé recherché : Base64
+Valeur trouvée : 5UJiFctbmgbDoLXmpL12mkno8HT4Lv8dlat8FxR2GOc=
+Fichier / classe : sg.vantagepoint.uncrackable1.a
+Méthode : a(String str)
+Risque : Moyen
+Commentaire : Une valeur Base64 est codée en dur dans le code. Dans une application réelle, cela pourrait faciliter l’extraction de secrets ou de données sensibles.
+
+Observation 4
+Mot-clé recherché : clé / hex
+Valeur trouvée : 8d127684cbc37c17616d806cf50473cc
+Fichier / classe : sg.vantagepoint.uncrackable1.a
+Méthode : a(String str)
+Risque : Élevé dans un contexte réel
+Commentaire : Une valeur utilisée dans la vérification cryptographique est directement présente dans le code. Le stockage de clés ou valeurs sensibles en dur est une mauvaise pratique.
+
+Observation 5
+Mot-clé recherché : root
+Valeur trouvée : "Root detected!"
+Fichier / classe : sg.vantagepoint.uncrackable1.MainActivity
+Méthode : onCreate()
+Risque : Moyen
+Commentaire : L’application contient une logique de détection root visible dans le code décompilé. Cette protection peut être étudiée et potentiellement contournée dans un contexte de reverse engineering.
+
+Observation 6
+Mot-clé recherché : debug
+Valeur trouvée : "App is debuggable!"
+Fichier / classe : sg.vantagepoint.uncrackable1.MainActivity
+Méthode : onCreate()
+Risque : Moyen
+Commentaire : L’application vérifie si elle est débogable. Cette logique de sécurité est visible statiquement.
+
+Observation 7
+Mot-clé recherché : http / https
+Valeur trouvée : RAS
+Fichier / classe : Recherche globale JADX
+Méthode : N/A
+Risque : Faible
+Commentaire : Aucune URL ou endpoint réseau visible dans les extraits analysés pour l’instant.
+
+Constat potentiel 1 :
+android:allowBackup="true" activé dans AndroidManifest.xml.
+
+Constat potentiel 2 :
+Logique de vérification du secret visible dans le code décompilé.
+
+Constat potentiel 3 :
+Valeurs cryptographiques codées en dur dans sg.vantagepoint.uncrackable1.a.
+
+Constat potentiel 4 :
+Log.d utilisé pour afficher les erreurs AES.
+
+Constat potentiel 5 :
+Contrôles anti-root et anti-debug visibles et localisés dans MainActivity.
+
+=== Analyse des classes sg.vantagepoint.a ===
+
+Classe : sg.vantagepoint.a.a
+Rôle :
+Cette classe contient la logique cryptographique utilisée pour déchiffrer une valeur.
+
+Éléments observés :
+- Utilisation de SecretKeySpec
+- Utilisation de Cipher
+- Algorithme lié à AES
+- Déchiffrement avec cipher.init(2, secretKeySpec)
+- Absence d’IV visible dans cette méthode
+- La clé et la donnée chiffrée sont fournies depuis sg.vantagepoint.uncrackable1.a
+
+Risque :
+Moyen à élevé dans un contexte réel.
+
+Commentaire :
+La logique cryptographique est visible statiquement. Dans une application réelle, stocker les éléments nécessaires au déchiffrement dans le code facilite le reverse engineering.
+Classe : sg.vantagepoint.a.b
+Rôle :
+Cette classe vérifie si l’application est débogable.
+
+Code important :
+(context.getApplicationContext().getApplicationInfo().flags & 2) != 0
+
+Éléments observés :
+- Vérification du flag FLAG_DEBUGGABLE
+- Utilisée dans MainActivity via b.a(getApplicationContext())
+- Si l’application est débogable, MainActivity affiche "App is debuggable!" puis quitte
+
+Risque :
+Moyen.
+
+Commentaire :
+La logique anti-debug est visible dans le code décompilé. Un analyste peut facilement localiser cette protection.
+
+Classe : sg.vantagepoint.a.c
+Rôle :
+Cette classe contient plusieurs méthodes de détection root.
+
+Méthodes observées :
+- a() : recherche du binaire su dans les chemins du PATH
+- b() : vérifie si Build.TAGS contient "test-keys"
+- c() : vérifie l’existence de chemins connus liés à Superuser / su / SuperSU
+
+Indicateurs recherchés :
+- su
+- test-keys
+- /system/app/Superuser.apk
+- /system/xbin/daemonsu
+- /system/etc/init.d/99SuperSUDaemon
+- /system/bin/.ext/.su
+- /system/etc/.has_su_daemon
+- /system/etc/.installed_su_daemon
+- /dev/com.koushikdutta.superuser.daemon/
+
+Risque :
+Moyen.
+
+Commentaire :
+Les contrôles anti-root sont clairement visibles. Dans un contexte de reverse engineering, cette visibilité permet d’identifier précisément les conditions qui déclenchent la détection root.
+
+=== Observations Task 4 ===
+
+Observation 1 — Chaînes d’interface liées au secret
+Mot-clé recherché : secret
+Valeur trouvée :
+- "Enter the Secret String"
+- "This is the correct secret."
+
+Localisation :
+- res/values/strings.xml
+- sg.vantagepoint.uncrackable1.MainActivity.verify()
+
+Risque : Faible
+
+Commentaire :
+Ces chaînes indiquent la fonction principale de l’application, mais ne révèlent pas directement le secret.
+
+Observation 2 — Valeur Base64 codée en dur
+Mot-clé recherché : Base64
+Valeur trouvée :
+5UJiFctbmgbDoLXmpL12mkno8HT4Lv8dlat8FxR2GOc=
+
+Localisation :
+sg.vantagepoint.uncrackable1.a.a(String str)
+
+Risque : Moyen
+
+Commentaire :
+Une donnée encodée en Base64 est présente directement dans le code. Dans une application réelle, ce type de valeur peut être extrait par analyse statique.
+
+Observation 3 — Valeur hexadécimale codée en dur
+Mot-clé recherché : AES / key / hex
+Valeur trouvée :
+8d127684cbc37c17616d806cf50473cc
+
+Localisation :
+sg.vantagepoint.uncrackable1.a.a(String str)
+
+Risque : Élevé dans un contexte réel
+
+Commentaire :
+Une valeur utilisée dans la logique cryptographique est codée en dur. Cela facilite la reconstruction de la logique de vérification.
+
+Observation 4 — Log d’erreur cryptographique
+Mot-clé recherché : Log.d / AES error
+Valeur trouvée :
+Log.d("CodeCheck", "AES error:" + e.getMessage())
+
+Localisation :
+sg.vantagepoint.uncrackable1.a.a(String str)
+
+Risque : Moyen
+
+Commentaire :
+L’application journalise les erreurs liées au traitement AES. Dans une application réelle, les logs peuvent exposer des détails internes utiles à un attaquant.
+
+Observation 5 — Détection root visible
+Mot-clé recherché : root / su / test-keys
+Valeur trouvée :
+- "Root detected!"
+- recherche du binaire su
+- vérification de Build.TAGS avec "test-keys"
+- chemins liés à Superuser / SuperSU
+
+Localisation :
+- sg.vantagepoint.uncrackable1.MainActivity.onCreate()
+- sg.vantagepoint.a.c
+
+Risque : Moyen
+
+Commentaire :
+Les mécanismes anti-root sont visibles statiquement et peuvent être localisés facilement.
+
+Observation 6 — Détection debug visible
+Mot-clé recherché : debug
+Valeur trouvée :
+- "App is debuggable!"
+- vérification du flag ApplicationInfo.flags & 2
+
+Localisation :
+- sg.vantagepoint.uncrackable1.MainActivity.onCreate()
+- sg.vantagepoint.a.b
+
+Risque : Moyen
+
+Commentaire :
+La logique anti-debug est visible dans le code décompilé.
+
+
+Observation 7 — allowBackup activé
+Mot-clé recherché : allowBackup
+Valeur trouvée :
+android:allowBackup="true"
+
+Localisation :
+AndroidManifest.xml, balise <application>
+
+Risque : Moyen dans un contexte réel
+
+Commentaire :
+Si l’application stockait des données sensibles localement, l’activation des sauvegardes pourrait faciliter leur récupération selon le contexte.
+
+=== Task 4 — Recherche de chaînes sensibles dans JADX ===
+
+Configuration de recherche :
+Les recherches ont été effectuées dans JADX GUI avec les options :
+Class, Method, Field, Code, Resource et Comments activées.
+
+Recherches effectuées :
+- http
+- https
+- api
+- token
+- secret
+- password
+- pwd
+- debug
+- root
+- test
+- check
+- verify
+- AES
+- Base64
+
+Résultats :
+
+1. Recherche "http"
+Résultat : Found 3
+Localisation :
+- AndroidManifest.xml
+- res/layout/activity_main.xml
+- res/menu/menu_main.xml
+Commentaire :
+Les résultats correspondent au namespace XML Android :
+http://schemas.android.com/apk/res/android
+Il ne s’agit pas d’un endpoint réseau applicatif.
+Risque : Faible / RAS
+
+2. Recherche "https"
+Résultat : Found 0
+Commentaire :
+Aucun endpoint HTTPS trouvé.
+Risque : Faible / RAS
+
+3. Recherche "api"
+Résultat : Found 0
+Commentaire :
+Aucun endpoint ou appel API explicite trouvé.
+Risque : Faible / RAS
+
+4. Recherche "token"
+Résultat : Found 0
+Commentaire :
+Aucun token d’accès visible dans le code ou les ressources.
+Risque : Faible / RAS
+
+5. Recherche "secret"
+Résultat : Found 5
+Localisation :
+- resources.arsc:/res/values/strings.xml
+- sg.vantagepoint.a.a
+- sg.vantagepoint.uncrackable1.MainActivity.verify()
+Commentaire :
+Des chaînes liées au secret et à sa vérification sont visibles dans les ressources et le code décompilé.
+Risque : Moyen
+
+6. Recherche "password"
+Résultat : Found 0
+Commentaire :
+Aucun mot de passe codé en dur trouvé.
+Risque : Faible / RAS
+
+7. Recherche "pwd"
+Résultat : Found 0
+Commentaire :
+Aucune chaîne liée à un mot de passe abrégé trouvée.
+Risque : Faible / RAS
+
+8. Recherche "debug"
+Résultat : Found 1
+Localisation :
+- sg.vantagepoint.uncrackable1.MainActivity.onCreate()
+Valeur :
+- "App is debuggable!"
+Commentaire :
+La logique anti-debug est visible dans le code décompilé.
+Risque : Moyen
+
+9. Recherche "root"
+Résultat : Found 1
+Localisation :
+- sg.vantagepoint.uncrackable1.MainActivity.onCreate()
+Valeur :
+- "Root detected!"
+Commentaire :
+La logique anti-root est visible dans le code décompilé.
+Risque : Moyen
+
+10. Recherche "test"
+Résultat : Found 1
+Localisation :
+- sg.vantagepoint.a.c.b()
+Valeur :
+- "test-keys"
+Commentaire :
+L’application vérifie si le build Android contient l’indicateur test-keys, souvent associé à un environnement modifié ou rooté.
+Risque : Moyen
+
+11. Recherche "check"
+Résultat : Found 2
+Localisation :
+- resources.arsc:/res/values/strings.xml
+- sg.vantagepoint.uncrackable1.a.a(String)
+Valeur importante :
+- Log.d("CodeCheck", "AES error:" + e.getMessage())
+Commentaire :
+Un log lié à une erreur AES est présent. Dans une application réelle, les logs techniques peuvent révéler des informations utiles à un attaquant.
+Risque : Moyen
+
+12. Recherche "verify"
+Résultat : Found 8
+Localisation :
+- owasp.mstg.uncrackable1.R.string.button_verify
+- res/layout/activity_main.xml
+- resources.arsc:/res/values/strings.xml
+- sg.vantagepoint.uncrackable1.MainActivity.verify(View view)
+Commentaire :
+La méthode responsable de la vérification du secret est facilement localisable.
+Risque : Moyen
+
+13. Recherche "AES"
+Résultat : Found 3
+Localisation :
+- sg.vantagepoint.a.a
+- sg.vantagepoint.uncrackable1.a
+Valeurs :
+- SecretKeySpec
+- Cipher.getInstance("AES")
+- "AES error:"
+Commentaire :
+La logique cryptographique utilisée par l’application est visible dans le code décompilé.
+Risque : Moyen à élevé dans un contexte réel
+
+14. Recherche "Base64"
+Résultat : Found 2
+Localisation :
+- sg.vantagepoint.uncrackable1.a
+Commentaire :
+Une valeur encodée en Base64 est présente dans le code.
+Risque : Moyen
+
+=== Task 5 — Conversion DEX vers JAR avec dex2jar ===
+
+Fichier DEX extrait :
+C:\Users\Microsoft\Documents\LAB4_UnCrackable-Level1\dex_out\classes.dex
+
+Taille :
+5528 bytes
+
+Outil utilisé :
+dex2jar / dex-tools-v2.4
+
+Commande utilisée :
+d2j-dex2jar.bat "C:\Users\Microsoft\Documents\LAB4_UnCrackable-Level1\dex_out\classes.dex" -o "C:\Users\Microsoft\Documents\LAB4_UnCrackable-Level1\results\UnCrackable-Level1.jar"
+
+Résultat :
+Conversion réussie.
+
+Fichier JAR généré :
+C:\Users\Microsoft\Documents\LAB4_UnCrackable-Level1\results\UnCrackable-Level1.jar
+
+Taille du JAR :
+5969 bytes
+
+=== Task 6 — Analyse avec JD-GUI et comparaison avec JADX ===
+
+Fichier ouvert dans JD-GUI :
+C:\Users\Microsoft\Documents\LAB4_UnCrackable-Level1\results\UnCrackable-Level1.jar
+
+Classe analysée :
+sg.vantagepoint.uncrackable1.MainActivity
+
+Observations dans JD-GUI :
+- Le JAR contient les packages Java :
+  - sg.vantagepoint.a
+  - sg.vantagepoint.uncrackable1
+
+- La classe MainActivity est visible.
+- La méthode onCreate() montre les contrôles anti-root :
+  c.a() || c.b() || c.c()
+
+- La méthode onCreate() montre aussi le contrôle anti-debug :
+  b.a(getApplicationContext())
+
+- La méthode verify(View paramView) récupère la chaîne saisie par l’utilisateur et appelle :
+  a.a(str)
+
+- Les messages suivants sont visibles :
+  - "Root detected!"
+  - "App is debuggable!"
+  - "Success!"
+  - "This is the correct secret."
+  - "Nope..."
+  - "That's not it. Try again."
+
+=== Comparaison JADX GUI vs JD-GUI ===
+
+Différence 1 — Type de contenu affiché
+
+JADX GUI :
+Permet d’ouvrir directement l’APK complet. Il affiche le manifeste Android, les ressources, les fichiers XML, le fichier classes.dex et le code Java décompilé.
+
+JD-GUI :
+Permet d’ouvrir le fichier JAR généré avec dex2jar. Il affiche principalement les packages et classes Java, mais pas la structure Android complète de l’APK.
+
+Différence 2 — Ressources Android
+
+JADX GUI :
+Affiche les ressources Android comme AndroidManifest.xml, strings.xml, activity_main.xml et menu_main.xml.
+
+JD-GUI :
+N’affiche pas directement les ressources Android de l’APK. Il affiche seulement le code Java contenu dans le JAR.
+
+Différence 3 — Lisibilité du code Android
+
+JADX GUI :
+Le code Android est plus lisible, car JADX conserve souvent les références Android symboliques comme R.layout.activity_main ou R.id.edit_text.
+
+JD-GUI :
+Certaines références Android apparaissent sous forme d’identifiants numériques, par exemple :
+setContentView(2130903040)
+findViewById(2130837505)
+
+Cela rend l’analyse moins intuitive.
+
+Différence 4 — Noms des paramètres et reconstruction du code
+
+JADX GUI :
+Reconstruit un code plus adapté au contexte Android, avec une meilleure lisibilité générale.
+
+JD-GUI :
+Utilise des noms génériques comme paramString, paramBundle, paramView. Le code reste compréhensible, mais il est moins propre.
+
+Différence 5 — Utilité dans le lab
+
+JADX GUI :
+Outil principal pour l’analyse statique Android, car il permet d’analyser l’APK complet.
+
+JD-GUI :
+Outil complémentaire utile pour confirmer le code Java après conversion DEX vers JAR.
+
+Conclusion :
+JADX GUI est plus adapté pour l’analyse statique complète d’un APK Android. JD-GUI est utile comme seconde approche pour vérifier les classes Java après conversion avec dex2jar.
+
+=== Capture JD-GUI — Classe sg.vantagepoint.uncrackable1.a ===
+
+Classe :
+sg.vantagepoint.uncrackable1.a
+
+Observations :
+- La classe contient la méthode a(String paramString), utilisée pour vérifier la chaîne saisie par l’utilisateur.
+- Une valeur Base64 est codée en dur :
+  5UJiFctbmgbDoLXmpL12mkno8HT4Lv8dlat8FxR2GOc=
+- Une valeur hexadécimale est également codée en dur :
+  8d127684cbc37c17616d806cf50473cc
+- La méthode appelle :
+  sg.vantagepoint.a.a.a(...)
+- En cas d’erreur, l’application écrit un log :
+  Log.d("CodeCheck", "AES error:" + exception.getMessage())
+
+Commentaire :
+JD-GUI confirme les éléments déjà observés dans JADX. La logique de vérification du secret et les valeurs utilisées par l’algorithme sont visibles après conversion DEX vers JAR.
+
+=== Capture JD-GUI — Classe sg.vantagepoint.a.c ===
+
+Classe :
+sg.vantagepoint.a.c
+
+Observations :
+- La méthode a() recherche le binaire su dans les chemins du PATH.
+- La méthode b() vérifie si Build.TAGS contient "test-keys".
+- La méthode c() vérifie l’existence de chemins connus liés à Superuser / SuperSU :
+  - /system/app/Superuser.apk
+  - /system/xbin/daemonsu
+  - /system/etc/init.d/99SuperSUDaemon
+  - /system/bin/.ext/.su
+  - /system/etc/.has_su_daemon
+  - /system/etc/.installed_su_daemon
+  - /dev/com.koushikdutta.superuser.daemon/
+
+Commentaire :
+JD-GUI confirme la présence de mécanismes anti-root visibles statiquement. Ces vérifications sont localisables dans le code Java reconstruit.
+
+Constat 1 — android:allowBackup="true"
+Sévérité : Moyenne
+
+Constat 2 — Valeurs cryptographiques codées en dur
+Sévérité : Élevée dans un contexte réel
+
+Constat 3 — Logique de vérification du secret visible
+Sévérité : Moyenne
+
+Constat 4 — Log.d avec erreur AES
+Sévérité : Moyenne
+
+Constat 5 — Logiques anti-root et anti-debug visibles
+Sévérité : Moyenne
