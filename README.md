@@ -585,7 +585,7 @@ sg.vantagepoint.uncrackable1
 ## 6.2 MainActivity dans JD-GUI
 
 <p align="center">
-  <img src="screenshots/JD-GUI_MainActivity%20.png" width="900">
+  <img src="screenshots/JD-GUI_MainActivity.png" width="900">
 </p>
 
 La classe `MainActivity` confirme les éléments déjà observés dans JADX :
