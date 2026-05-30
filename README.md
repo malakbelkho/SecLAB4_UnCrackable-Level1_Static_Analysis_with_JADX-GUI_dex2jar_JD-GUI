@@ -1000,23 +1000,7 @@ LAB4_UnCrackable-Level1
 
 ---
 
-# 12. Checklist des livrables
-
-| Livrable demandé | Statut |
-|---|---|
-| Mini-rapport d’analyse | Terminé |
-| Liste des permissions | Terminé |
-| Liste des composants exposés | Terminé |
-| Au moins 3 constats de sécurité | Terminé |
-| Remédiations proposées | Terminé |
-| Captures d’écran critiques | Terminé |
-| JAR généré avec dex2jar | Terminé |
-| Comparaison JADX / JD-GUI | Terminé |
-| Organisation des fichiers | Terminé |
-
----
-
-# 13. Ressources utilisées
+# 12. Ressources utilisées
 
 - OWASP MAS Crackmes — Android UnCrackable L1  
   https://mas.owasp.org/crackmes/
@@ -1035,7 +1019,7 @@ LAB4_UnCrackable-Level1
   
 ---
 
-# 14. Périmètre et limites de l’analyse
+# 13. Périmètre et limites de l’analyse
 
 Cette analyse est strictement statique. L’application n’a pas été modifiée ni exploitée.  
 Les observations reposent sur le contenu décompilé avec JADX GUI et JD-GUI, ainsi que sur l’extraction du bytecode avec dex2jar.
@@ -1048,24 +1032,9 @@ Limites :
 
 ---
 
-# 15. Correspondance avec les tâches du lab
+# 14. Checklist de conformité avec l’énoncé du lab
 
-| Tâche | Réalisation | Preuve |
-|---|---|---|
-| Task 1 | Workspace, vérification ZIP, hash SHA-256 | `Format-Hex.png`, `Get-FileHash.png` |
-| Task 2 | APK OWASP disponible et documenté | Informations générales |
-| Task 3 | Analyse JADX GUI du manifeste et des ressources | `AndroidManifest.png`, `strings.png` |
-| Task 4 | Recherche de chaînes sensibles | `search_*.png` |
-| Task 5 | Extraction DEX et conversion JAR | `dex_out_classes_dex.png`, `convert_dex-jar.png` |
-| Task 6 | Analyse JD-GUI et comparaison | captures JD-GUI |
-| Task 7 | Rapport final | `README.md` |
-| Task 8 | Organisation finale des fichiers | arborescence du projet |
-
----
-
-# 16. Checklist de conformité avec l’énoncé du lab
-
-## 16.1 Tâches techniques
+## 14.1 Tâches techniques
 
 | Tâche demandée | Exigence de l’énoncé | Réalisation | Statut |
 |---|---|---|---|
@@ -1087,7 +1056,7 @@ Limites :
 | Task 7 | Rédiger le rapport final | `README.md` + rapport Markdown | ✅ Terminé |
 | Task 8 | Organiser les fichiers | `screenshots/`, `dex_out/`, `results/` | ✅ Terminé |
 
-## 16.2 Livrables demandés
+## 14.2 Livrables demandés
 
 | Livrable demandé | Élément fourni | Statut |
 |---|---|---|
@@ -1100,7 +1069,7 @@ Limites :
 | JAR décompilé / généré | `results/UnCrackable-Level1.jar` | ✅ Fourni |
 | Comparaison JADX / JD-GUI | Section dédiée | ✅ Fourni |
 
-## 16.3 Éléments optionnels
+## 14.3 Éléments optionnels
 
 | Élément optionnel | Statut | Commentaire |
 |---|---|---|
@@ -1110,7 +1079,7 @@ Limites :
 
 ---
 
-# 17. Clôture de l’audit
+# 15. Clôture de l’audit
 
 | Point de contrôle final | Résultat |
 |---|---|
