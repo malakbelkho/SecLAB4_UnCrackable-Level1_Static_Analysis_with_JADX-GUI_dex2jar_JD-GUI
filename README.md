@@ -492,9 +492,12 @@ Les recherches ont été effectuées dans JADX GUI avec les options suivantes ac
 | `url` | 0 | Aucune URL applicative trouvée | Faible / RAS |
 | `server` | 0 | Aucun serveur ou endpoint backend visible | Faible / RAS |
 | `api_key` | 0 | Aucune clé API visible | Faible / RAS |
+| `apikey` | 0 | Aucune clé API visible sous forme alternative | Faible / RAS |
 | `auth` | 0 | Aucun élément d’authentification visible | Faible / RAS |
+| `bearer` | 0 | Aucun token Bearer identifié | Faible / RAS |
 | `jwt` | 0 | Aucun jeton JWT identifié | Faible / RAS |
 | `oauth` | 0 | Aucun mécanisme OAuth visible | Faible / RAS |
+| `firebase` | 0 | Aucun service Firebase identifié | Faible / RAS |
 | `crashlytics` | 0 | Aucun service Crashlytics identifié | Faible / RAS |
 
 ---
@@ -1062,7 +1065,7 @@ Limites :
 | Task 3 | Ouvrir l’APK dans JADX GUI | APK chargé et arborescence explorée | ✅ Terminé |
 | Task 3 | Analyser `AndroidManifest.xml` | Package, SDK, activité, permissions, configurations sensibles | ✅ Terminé |
 | Task 3 | Explorer les ressources | `strings.xml` analysé | ✅ Terminé |
-| Task 4 | Rechercher les chaînes sensibles | `http`, `https`, `.com`, `.net`, `.org`, `.io`, `api`, `token`, `secret`, `password`, `debug`, `root`, `AES`, `Base64`, `endpoint`, `url`, `server`, `api_key`, `auth`, `jwt`, `oauth`, `crashlytics`, etc. | ✅ Terminé |
+| Task 4 | Rechercher les chaînes sensibles | `http`, `https`, `.com`, `.net`, `.org`, `.io`, `api`, `token`, `secret`, `password`, `debug`, `root`, `AES`, `Base64`, `endpoint`, `url`, `server`, `api_key`, `apikey`, `auth`, `bearer`, `jwt`, `oauth`, `firebase`, `crashlytics`, etc. | ✅ Terminé |
 | Task 4 | Documenter au moins 5 observations | 14 recherches + observations principales | ✅ Terminé |
 | Task 5 | Extraire `classes.dex` | `dex_out/classes.dex` généré | ✅ Terminé |
 | Task 5 | Convertir DEX vers JAR | `results/UnCrackable-Level1.jar` généré | ✅ Terminé |
