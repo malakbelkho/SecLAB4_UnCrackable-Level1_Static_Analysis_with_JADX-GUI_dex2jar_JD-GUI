@@ -35,6 +35,32 @@
 
 ---
 
+## Résumé exécutif
+
+L’analyse statique de l’application **UnCrackable-Level1.apk** a permis d’identifier plusieurs éléments intéressants liés à la sécurité mobile.
+
+L’application ne demande aucune permission Android visible et ne contient pas d’endpoint réseau, de mot de passe ou de token directement exposé. Cependant, plusieurs éléments sensibles sont présents dans le code décompilé, notamment la logique de vérification du secret, des valeurs cryptographiques codées en dur, ainsi que des mécanismes anti-root et anti-debug facilement localisables.
+
+Le niveau de risque global est évalué comme :
+
+<div align="center">
+
+## 🟠 Risque global : Moyen
+
+</div>
+
+Les risques identifiés sont principalement liés au contexte pédagogique du crackme. Dans une application réelle, ces pratiques devraient être évitées ou renforcées.
+
+## Actions prioritaires recommandées
+
+1. Désactiver `android:allowBackup` si l’application manipule des données sensibles.
+2. Éviter le stockage de valeurs cryptographiques ou de secrets dans le code client.
+3. Déplacer les vérifications critiques côté serveur.
+4. Supprimer ou limiter les logs techniques en production.
+5. Renforcer les protections anti-reverse engineering par plusieurs couches complémentaires.
+
+---
+
 ## 🎯 Objectif du lab
 
 L’objectif de ce laboratoire est de réaliser une **analyse statique complète** d’un APK Android autorisé, sans exécuter l’application.
@@ -906,35 +932,9 @@ Mettre à jour progressivement `targetSdkVersion` vers une version récente d’
 
 ---
 
-# 11. Résumé exécutif
+# 11. Annexes
 
-L’analyse statique de l’application **UnCrackable-Level1.apk** a permis d’identifier plusieurs éléments intéressants liés à la sécurité mobile.
-
-L’application ne demande aucune permission Android visible et ne contient pas d’endpoint réseau, de mot de passe ou de token directement exposé. Cependant, plusieurs éléments sensibles sont présents dans le code décompilé, notamment la logique de vérification du secret, des valeurs cryptographiques codées en dur, ainsi que des mécanismes anti-root et anti-debug facilement localisables.
-
-Le niveau de risque global est évalué comme :
-
-<div align="center">
-
-## 🟠 Risque global : Moyen
-
-</div>
-
-Les risques identifiés sont principalement liés au contexte pédagogique du crackme. Dans une application réelle, ces pratiques devraient être évitées ou renforcées.
-
-## Actions prioritaires recommandées
-
-1. Désactiver `android:allowBackup` si l’application manipule des données sensibles.
-2. Éviter le stockage de valeurs cryptographiques ou de secrets dans le code client.
-3. Déplacer les vérifications critiques côté serveur.
-4. Supprimer ou limiter les logs techniques en production.
-5. Renforcer les protections anti-reverse engineering par plusieurs couches complémentaires.
-
----
-
-# 12. Annexes
-
-## 12.1 Permissions demandées
+## 11.1 Permissions demandées
 
 Aucune permission `uses-permission` n’a été identifiée dans le manifeste.
 
@@ -944,7 +944,7 @@ Aucune permission demandée.
 
 ---
 
-## 12.2 Composants Android déclarés
+## 11.2 Composants Android déclarés
 
 | Type | Composant | Export / exposition |
 |---|---|---|
@@ -955,7 +955,7 @@ Aucune permission demandée.
 
 ---
 
-## 12.3 Configuration sensible
+## 11.3 Configuration sensible
 
 | Élément | Valeur | Commentaire |
 |---|---|---|
@@ -966,7 +966,7 @@ Aucune permission demandée.
 
 ---
 
-## 12.4 Arborescence finale du projet
+## 11.4 Arborescence finale du projet
 
 ```text
 LAB4_UnCrackable-Level1
@@ -1000,7 +1000,7 @@ LAB4_UnCrackable-Level1
 
 ---
 
-# 13. Checklist des livrables
+# 12. Checklist des livrables
 
 | Livrable demandé | Statut |
 |---|---|
@@ -1016,7 +1016,7 @@ LAB4_UnCrackable-Level1
 
 ---
 
-# 14. Ressources utilisées
+# 13. Ressources utilisées
 
 - OWASP MAS Crackmes — Android UnCrackable L1  
   https://mas.owasp.org/crackmes/
@@ -1035,7 +1035,7 @@ LAB4_UnCrackable-Level1
   
 ---
 
-# 15. Périmètre et limites de l’analyse
+# 14. Périmètre et limites de l’analyse
 
 Cette analyse est strictement statique. L’application n’a pas été modifiée ni exploitée.  
 Les observations reposent sur le contenu décompilé avec JADX GUI et JD-GUI, ainsi que sur l’extraction du bytecode avec dex2jar.
@@ -1048,7 +1048,7 @@ Limites :
 
 ---
 
-# 16. Correspondance avec les tâches du lab
+# 15. Correspondance avec les tâches du lab
 
 | Tâche | Réalisation | Preuve |
 |---|---|---|
@@ -1063,9 +1063,9 @@ Limites :
 
 ---
 
-# 17. Checklist de conformité avec l’énoncé du lab
+# 16. Checklist de conformité avec l’énoncé du lab
 
-## 17.1 Tâches techniques
+## 16.1 Tâches techniques
 
 | Tâche demandée | Exigence de l’énoncé | Réalisation | Statut |
 |---|---|---|---|
@@ -1087,7 +1087,7 @@ Limites :
 | Task 7 | Rédiger le rapport final | `README.md` + rapport Markdown | ✅ Terminé |
 | Task 8 | Organiser les fichiers | `screenshots/`, `dex_out/`, `results/` | ✅ Terminé |
 
-## 17.2 Livrables demandés
+## 16.2 Livrables demandés
 
 | Livrable demandé | Élément fourni | Statut |
 |---|---|---|
@@ -1100,7 +1100,7 @@ Limites :
 | JAR décompilé / généré | `results/UnCrackable-Level1.jar` | ✅ Fourni |
 | Comparaison JADX / JD-GUI | Section dédiée | ✅ Fourni |
 
-## 17.3 Éléments optionnels
+## 16.3 Éléments optionnels
 
 | Élément optionnel | Statut | Commentaire |
 |---|---|---|
@@ -1110,7 +1110,7 @@ Limites :
 
 ---
 
-# 18. Clôture de l’audit
+# 17. Clôture de l’audit
 
 | Point de contrôle final | Résultat |
 |---|---|
