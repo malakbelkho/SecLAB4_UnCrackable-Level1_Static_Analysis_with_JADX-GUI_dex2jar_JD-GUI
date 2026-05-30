@@ -676,7 +676,7 @@ La classe `sg.vantagepoint.a.c` confirme les trois contrôles anti-root :
 
 # 8. Analyse des constats de sécurité
 
-## 🧨 8.1 Légende de sévérité
+## 8.1 Légende de sévérité 🧨
 
 | Indicateur | Niveau | Signification |
 |---|---|---|
@@ -871,18 +871,18 @@ Renforcer la défense avec :
 
 ---
 
-## Constat #6 — Utilisation d’AES sans IV explicite / configuration cryptographique faible 🔴
+## Constat #6 — Configuration AES implicite / absence d’IV visible 🔴
 
 | Élément | Détail |
 |---|---|
 | **Sévérité** | 🔴 **Élevée dans un contexte réel** |
 | **Localisation** | `sg.vantagepoint.a.a.a(byte[], byte[])` |
-| **Valeurs observées** | Utilisation de `SecretKeySpec`, `Cipher.getInstance("AES")` et absence d’IV explicite visible |
+| **Valeurs observées** | Utilisation de `SecretKeySpec`, `Cipher.getInstance("AES")` et absence d’IV explicite visible dans le code analysé |
 | **Catégorie** | Cryptographie / configuration de chiffrement |
 
 ### Description
 
-La classe cryptographique utilise AES pour déchiffrer la valeur utilisée dans la vérification du secret. Le code décompilé montre une utilisation d’AES sans IV explicite visible dans la méthode analysée.
+La classe cryptographique utilise AES pour déchiffrer la valeur utilisée dans la vérification du secret. Le code décompilé montre une configuration AES implicite, sans IV explicite visible dans la méthode analysée.
 
 ### Impact potentiel
 
@@ -921,7 +921,7 @@ Mettre à jour progressivement `targetSdkVersion` vers une version récente d’
 
 | Élément vérifié | Résultat |
 |---|---|
-| Permissions Android excessives | Aucune permission visible |
+| Permissions Android demandées | Aucune permission visible |
 | Token d’accès | Non trouvé |
 | Mot de passe codé en dur | Non trouvé |
 | Endpoint API | Non trouvé |
@@ -950,7 +950,7 @@ Aucune permission demandée.
 
 | Type | Composant | Export / exposition |
 |---|---|---|
-| Activity | `sg.vantagepoint.uncrackable1.MainActivity` | Point d’entrée principal via `MAIN` / `LAUNCHER` |
+| Activity | `sg.vantagepoint.uncrackable1.MainActivity` | Accessible comme activité launcher via `MAIN` / `LAUNCHER` |
 | Service | Aucun | N/A |
 | Receiver | Aucun | N/A |
 | Provider | Aucun | N/A |
